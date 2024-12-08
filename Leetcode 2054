@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxTwoEvents(vector<vector<int>>& events) {
+        sort(events.begin(),events.end());
+        vector<vector<int>> endTimeSorted= events;
+        sort(endTimeSorted.begin(),endTimeSorted.end(),[] (vector<int>&a, vector<int>&b)
+        {
+            return a[1]<b[1];
+        });
+        priority_queue<int>p;
+        int i=0;
+        int ans=0;
+        for(auto &x : events)
+        {
+            int startTime=x[0];
+
+            while(i<endTimeSorted.size() && endTimeSorted[i][1]<startTime)
+            {
+                p.push(endTimeSorted[i][2]);
+                i++;
+            }
+            if(!p.empty()){
+                ans=max(ans,p.top() + x[2]);
+
+            }
+            else ans=max(ans, x[2]);
+        }
+       return ans; 
+    }
+};
